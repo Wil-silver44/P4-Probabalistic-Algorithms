@@ -20,7 +20,9 @@ Generate a dataset from the input specification. The dataset will contain an ind
 
  
 
-Part B: Implement the Monte Carlo algorithm to determine which of the chip batches are bad. It should know how many data sets there are, read them one at a time, sample the appropriate number of items, and report good batch or bad batch. Your output should look like the output below.
+### Part B: Implement the Monte Carlo algorithm to determine which of the chip batches are bad.
+
+It should know how many data sets there are, read them one at a time, sample the appropriate number of items, and report good batch or bad batch. Your output should look like the output below.
 
 
 Example output:
