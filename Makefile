@@ -7,7 +7,7 @@ CXX = g++
 
 CXXFLAGS = -g -Wall
 
-OBJECTS = DataSet.o QASim.o
+OBJECTS = DataSet.o QASim.o AnalyticalModel.o
 
 main: main.cpp $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^

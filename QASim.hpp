@@ -3,8 +3,17 @@
 #include <iostream>
 #include <iomanip>
 #include "DataSet.hpp"
+#include "AnalyticalModel.hpp"
 
-//header comment goes here.
+/***************************************************************
+ *   Student Name: Wilver Santos
+ *   File Name: QASim.hpp
+ *   Assignment number: Project 4
+ *
+ *   Other comments regarding the file - defines the attributes and methods used to run
+ *   the chipset problem simulation.
+ *
+ ***************************************************************/
 
 using std::cout;
 using std::endl;
@@ -21,7 +30,6 @@ class QASim
 	DataSet chipDataSets;
 
 	public:
-	QASim();
 	void RunFullSim();
 	void RunSim(int simNum, string testFile);
 };
