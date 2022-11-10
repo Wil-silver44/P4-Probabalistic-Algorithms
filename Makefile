@@ -7,11 +7,10 @@ CXX = g++
 
 CXXFLAGS = -g -Wall
 
-OBJECTS = DataSet.o
+OBJECTS = DataSet.o QASim.o
 
-#main: main.cpp $(OBJECTS)
-# 	$(CXX) $(CXXFLAGS) -o $@ $^
-
+main: main.cpp $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 DataSetTest: DataSetTest.cpp DataSet.o
 	 $(CXX) $(CXXFLAGS) -o $@ $^
