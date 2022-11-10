@@ -10,19 +10,24 @@
  *
  ***************************************************************/
 
-DataSet::DataSet()
-{
-	this->maxBadItems = 0;
-	this->minBadItems = 0;
-	this->avgBadItems = 0.00;
-}
-
 void DataSet::Generate(string sourceFileName)
 {
+	std::random_device rand; //generates seed for random num generator
+	std::mt19937 gen(rand()); //Standard mersenne twister engine seeded with the above random device.
+	std::uniform_int_distribution<> distribute(0, 99);
+	//generates random ints uniformly distributed along a closed range.	
+
+	this->maxBadItems = 0;
+        this->minBadItems = 0;
+        this->numBadSets = 0;
+	this->avgBadItems = 0.00;
+
+	//opens dataset paramater file
+	this->fileRead.open(sourceFileName);
+	
 	int numHolder = 0;
 
-	this->fileRead.open(sourceFileName);
-
+	//reads all paramater data
 	fileRead >> numHolder;
 
 	SetNumBatches(numHolder);
@@ -44,6 +49,71 @@ void DataSet::Generate(string sourceFileName)
 	SetSampleSize(numHolder);
 
 	this->fileRead.close();
+	
+	//tracks total number of bad items across all batches.
+	int totBadItems = 0;
+
+	//generates batch files.
+	for(int i = 1; i <= GetNumBatches(); ++i)
+	{
+		string helper = "batchHolder/ds" + std::to_string(i) + ".txt";
+		this->fileWrite.open(helper);
+		
+		//determine if bach is bad
+		numHolder = distribute(gen);
+		//generates bad batch
+		if(numHolder < GetPContainsBad())
+		{
+			int badItemHelper = 0;
+			this->numBadSets++;
+
+			for(int j = 0; j < GetNumItems(); ++j)
+			{
+				numHolder =  distribute(gen);
+				//write bad item
+				if(numHolder < GetPBadInSet())
+				{
+					this->fileWrite << 'b' << std::endl;
+					badItemHelper++;
+					totBadItems++;
+				}
+				//write good item
+				else
+				{
+					this->fileWrite << 'g' << std::endl;
+						
+				}
+			}
+
+			if(i == 1)
+			{
+				this->maxBadItems = badItemHelper;
+				this->minBadItems = badItemHelper;
+			}
+			else
+			{
+				if(this->maxBadItems < badItemHelper)
+				{ this->maxBadItems = badItemHelper; }
+
+				if(this->minBadItems > badItemHelper)
+				{ this->minBadItems = badItemHelper; }
+			}
+		}
+		
+		//generates good batch
+		else
+		{
+			for(int i = 0; i < GetNumItems(); ++i)
+			{
+				this->fileWrite << 'g' << std::endl;
+			}
+		}
+		
+		this->fileWrite.close();
+	}
+	
+	//batches written, calc avg bad items
+	this->avgBadItems = (totBadItems / (GetNumBadSets() * 1.0) );
 }
 
 void DataSet::SetNumBatches(int someNum)
@@ -86,7 +156,4 @@ int DataSet::GetMinBadItems()
 { return this->minBadItems; }
 
 double DataSet::GetAvgBadItems()
-{
-	double someNum = 0;
-	return someNum;
-}
+{ return this->avgBadItems; }

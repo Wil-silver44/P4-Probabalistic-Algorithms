@@ -2,6 +2,7 @@
 #define DATASET_HPP
 #include <fstream>
 #include <string>
+#include <random>
 
 /***************************************************************
  *   Student Name: Wilver Santos
@@ -33,7 +34,6 @@ class DataSet
 		ofstream fileWrite;
 
 	public:
-		DataSet();
 		void Generate(string sourceFileName);
 		void SetNumBatches(int someNum);
 		void SetNumItems(int someNum);
